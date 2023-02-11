@@ -3,12 +3,8 @@ package ibrokhim_uz.testproject
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.view.marginEnd
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
 import ibrokhim_uz.testproject.model.TestModel
 import kotlinx.android.synthetic.main.activity_main.*
 
