@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     var tests = arrayListOf<TestModel>()
     var index = 0
     var numberOfCorrectAnswers: Int = 0
-    var count: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,16 +26,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         createNumber(tests.size)
 
         next.setOnClickListener {
-            if (index == tests.size - 2) {
-                next.text = "Finish"
-            }
-
             check()
 
             if (index < tests.size - 1) {
                 index++
             } else {
-                Toast.makeText(this, "$numberOfCorrectAnswers ta topdingiz", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "$numberOfCorrectAnswers ta topdingiz", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            if (index == tests.size - 1) {
+                next.text = "Finish"
             }
 
             createTest(index)
@@ -68,12 +68,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             btn.id = i
             btn.text = "${i + 1}"
             btn.tag = "$i"
+            btn.setOnClickListener(this)
             if (tests[i].status) {
                 btn.text = "✓"
                 btn.setTextColor(Color.GREEN)
                 btn.textSize = 20F
             }
-            btn.setOnClickListener(this)
             questions_number.addView(btn)
         }
     }
@@ -100,14 +100,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             tests[index].status = true
             tests[index].chosenAnswerIndex = answers.checkedRadioButtonId
 
-            var radioButton = findViewById<RadioButton>(tests[index].chosenAnswerIndex)
-            var chosenVariantText = radioButton.text
+            numberOfCorrectAnswers = 0
+            for (i in tests) {
+                if (i.status) {
+                    var radioButton = findViewById<RadioButton>(i.chosenAnswerIndex)
+                    var chosenVariantText = radioButton.text.toString()
 
-            if (chosenVariantText.equals(tests[index].correct_answer) && !count && index <= tests.size - 1) {
-                if (index == tests.size - 1) {
-                    count = true
+                    if (chosenVariantText == i.correct_answer) {
+                        numberOfCorrectAnswers++
+                    }
                 }
-                numberOfCorrectAnswers++
             }
         }
     }
